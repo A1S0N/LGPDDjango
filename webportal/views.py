@@ -7,6 +7,9 @@ from .serializers import *
 from django.core.mail import send_mail
 from .decorators import check_recaptcha
 
+################################################################################
+#                 P    R    I    V    A    C    Y    R    S
+################################################################################
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def rules(request):
@@ -14,6 +17,49 @@ def rules(request):
     serializer = PrivacyRuleSerializer(rules_, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@check_recaptcha
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def newRule(request):
+	if request.method == 'POST':
+		serializer = PrivacyRule(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+	else:
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+ 
+@check_recaptcha
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def editRule(request):
+	if request.method == 'POST':
+		try:
+			PrivacyRule.objects.get(id=request.data['id']).update(title=request.data['title'], severity=request.data['severity'])
+			return Response(status=status.HTTP_200_OK)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+	else:
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+@check_recaptcha
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def deleteRule(request):
+	if request.method == 'POST':
+		try:
+			PrivacyRule.objects.get(id=request.data['id']).delete()
+			return Response(status=status.HTTP_200_OK)
+		except:
+			return Response(status=status.HTTP_400_BAD_REQUEST)
+	else:
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+################################################################################
+################################################################################
+#                 L    G    P    D    R    E    Q    S    T
+################################################################################
 @check_recaptcha
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -34,3 +80,4 @@ def contact(request):
         return Response('{}', status=status.HTTP_200_OK)
     else:
         return Response('{}', status=status.HTTP_400_BAD_REQUEST)
+################################################################################
