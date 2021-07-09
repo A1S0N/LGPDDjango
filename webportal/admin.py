@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(PrivacyRule)
 admin.site.register(LGPDRequest)
+admin.site.register(Person)
