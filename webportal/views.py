@@ -4,22 +4,22 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from .models import *
 from .serializers import *
-from django.core.mail import send_mail
+#from django.core.mail import send_mail
 from .decorators import check_recaptcha
 ################################################################################
 #                 P    R    I    V    A    C    Y    R    S
 ################################################################################
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def rules(request):
     rules_ = PrivacyRule.objects.all()
     serializer = PrivacyRuleSerializer(rules_, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def newRule(request):
-	if request.method == 'POST' and request.token_is_valid:
+	if request.method == 'POST': #and request.token_is_valid:
 		serializer = PrivacyRuleSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -30,7 +30,7 @@ def newRule(request):
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def editRule(request):
 	if request.method == 'POST' and request.token_is_valid:
 		try:
@@ -42,7 +42,7 @@ def editRule(request):
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+#@permission_classes((IsAuthenticated, ))
 def deleteRule(request):
 	if request.method == 'POST' and request.token_is_valid:
 		try:
@@ -63,13 +63,14 @@ def contact(request):
     serializer = LGPDRequestSerializer(data=request.data)
     if serializer.is_valid():
         try:
-            send_mail(
-                'Nova solicitação LGPD',
-                'Acesse a platafoma para verificar',
-                '#',
-                ['#'],
-                fail_silently=False,
-            )
+   #         send_mail(
+   #            'Nova solicitação LGPD',
+   #             'Acesse a platafoma para verificar',
+   #             '#',
+   #             ['#'],
+   #             fail_silently=False,
+   #         )
+            pass
         except:
             pass
         serializer.save()
