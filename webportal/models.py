@@ -2,7 +2,7 @@ from django.db import models
 
 class PrivacyRule(models.Model):
     title = models.CharField("Titulo", max_length=255, default='', blank=True)
-    severity = models.DecimalField("Gravidade", default=0, decimal_places=10, max_digits=20)
+    severity = models.IntegerField("Gravidade", default=0)
 
     def __str__(self):
         return self.title

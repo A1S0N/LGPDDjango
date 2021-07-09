@@ -12,7 +12,7 @@ from .decorators import check_recaptcha
 @api_view(['GET'])
 #@permission_classes((IsAuthenticated, ))
 def rules(request):
-    rules_ = PrivacyRule.objects.all()
+    rules_ = PrivacyRule.objects.all().order_by('title')
     serializer = PrivacyRuleSerializer(rules_, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
