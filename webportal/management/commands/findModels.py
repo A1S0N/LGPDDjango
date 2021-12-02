@@ -6,5 +6,5 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
     print('\n[*] Getting Data...\n')
-    print(getModels(), '\n')
-    print(getFields(getModels()), '\n')
+    print(f'Models: {getModels()}\n')
+    print(f'Fields: {getFields(getModels())}\n')

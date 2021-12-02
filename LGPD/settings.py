@@ -157,12 +157,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 1
 }
 
-JWT = {
-    'JWT_VERIFY_EXPIRATION': False,
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id'
-}
-
 from datetime import timedelta
 
 SIMPLE_JWT = {
